@@ -1,0 +1,20 @@
+.{
+    .name = .zquickjs,
+    .version = "0.0.0",
+    .fingerprint = 0xe66fdf67e9b3d385,
+    .minimum_zig_version = "0.14.1",
+    .dependencies = .{
+        .quickjs = .{
+            .url = "git+https://github.com/bellard/quickjs#1fdc768fdc8571300755cdd3e4654ce99c0255ce",
+            .hash = "N-V-__8AADKoLgAo9nWwH1M3IgP7ScLmkl1_36YiPFuLdK3k",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        // For example...
+        //"LICENSE",
+        //"README.md",
+    },
+}
