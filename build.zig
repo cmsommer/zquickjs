@@ -1,5 +1,8 @@
 const std = @import("std");
 
+const version: []const u8 = "2025-04-26"; // copied from quickjs/VERSION
+const version_flag = "-DCONFIG_VERSION=\"" ++ version ++ "\"";
+
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
@@ -9,7 +12,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    const lib_mod = b.createModule(.{
+    const lib_mod = b.addModule("zquickjs", .{
         .root_source_file = b.path("src/root.zig"),
         .target = target,
         .optimize = optimize,
@@ -18,18 +21,17 @@ pub fn build(b: *std.Build) void {
     lib_mod.addIncludePath(quickjs_dep.path("."));
     lib_mod.addCSourceFiles(.{
         .root = quickjs_dep.path("."),
+        .flags = &.{
+            version_flag,
+        },
         .files = &.{
-            "cutils.c",
-            "dtoa.c",
             "libregexp.c",
             "libunicode.c",
-            "qjs.c",
-            "qjsc.c",
-            "quickjs-libc.c",
+            "cutils.c",
+            "dtoa.c",
             "quickjs.c",
         },
     });
-    lib_mod.link_libc = true;
 
     const exe_mod = b.createModule(.{
         .root_source_file = b.path("src/main.zig"),
@@ -37,7 +39,7 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    exe_mod.addImport("zquickjs_lib", lib_mod);
+    exe_mod.addImport("zquickjs", lib_mod);
 
     const lib = b.addLibrary(.{
         .linkage = .static,

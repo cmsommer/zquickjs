@@ -1,5 +1,5 @@
 const std = @import("std");
-const lib = @import("zquickjs_lib");
+const lib = @import("zquickjs");
 
 const c = lib.c;
 
@@ -16,8 +16,8 @@ pub fn main() !void {
     };
     defer c.JS_FreeContext(ctx);
 
-    c.js_std_init_handlers(rt);
-    c.js_std_add_helpers(ctx, 0, null);
+    // c.js_std_init_handlers(rt);
+    // c.js_std_add_helpers(ctx, 0, null);
 
     const js_code =
         \\const game = {
