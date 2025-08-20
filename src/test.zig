@@ -33,35 +33,24 @@ pub fn main() !void {
         \\    if (nextRoom) {
         \\      this.currentRoom = nextRoom;
         \\      this.look();
-        \\    } else {
-        \\      console.log("You can't go that way.");
         \\    }
         \\  },
         \\  look: function() {
-        \\    console.log(this.rooms[this.currentRoom].description);
         \\    const items = this.rooms[this.currentRoom].items;
-        \\    if (items && items.length > 0) {
-        \\      console.log(`You see: ${items.join(', ')}`);
-        \\    }
         \\  },
         \\  take: function(item) {
         \\    const roomItems = this.rooms[this.currentRoom].items;
         \\    if (roomItems && roomItems.includes(item)) {
         \\      this.inventory.push(item);
         \\      this.rooms[this.currentRoom].items = roomItems.filter(i => i !== item);
-        \\      console.log(`You picked up the ${item}.`);
-        \\    } else {
-        \\      console.log("You don't see that item here.");
         \\    }
         \\  }
         \\};
         \\
-        \\console.log("Welcome to the Text Adventure!");
         \\game.look();
         \\game.move('north');
         \\game.move('east');
         \\game.take('golden key');
-        \\console.log(`Inventory: ${game.inventory.join(', ')}`);
         \\
         \\game.inventory.length; // Return the number of items in inventory
     ;

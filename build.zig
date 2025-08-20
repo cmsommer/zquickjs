@@ -1,6 +1,6 @@
 const std = @import("std");
 
-const version: []const u8 = "2025-04-26"; // copied from quickjs/VERSION
+const version: []const u8 = "2025-04-26"; // copied from current quickjs/VERSION. To update refetch the quickjs dependency and copy the value from the VERSION file.
 const version_flag = "-DCONFIG_VERSION=\"" ++ version ++ "\"";
 
 pub fn build(b: *std.Build) void {
@@ -18,6 +18,8 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
+    lib_mod.link_libc = true;
+
     lib_mod.addIncludePath(quickjs_dep.path("."));
     lib_mod.addCSourceFiles(.{
         .root = quickjs_dep.path("."),
@@ -25,16 +27,16 @@ pub fn build(b: *std.Build) void {
             version_flag,
         },
         .files = &.{
+            "cutils.c",
             "libregexp.c",
             "libunicode.c",
-            "cutils.c",
             "dtoa.c",
             "quickjs.c",
         },
     });
 
     const exe_mod = b.createModule(.{
-        .root_source_file = b.path("src/main.zig"),
+        .root_source_file = b.path("src/test.zig"),
         .target = target,
         .optimize = optimize,
     });
