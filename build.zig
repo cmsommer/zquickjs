@@ -1,7 +1,6 @@
 const std = @import("std");
 
-const version: []const u8 = "2025-04-26"; // copied from current quickjs/VERSION. To update refetch the quickjs dependency and copy the value from the VERSION file.
-const version_flag = "-DCONFIG_VERSION=\"" ++ version ++ "\"";
+const version: []const u8 = "\"2025-04-26\""; // copied from current quickjs/VERSION. To update refetch the quickjs dependency and copy the value from the VERSION file.
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -23,9 +22,6 @@ pub fn build(b: *std.Build) void {
     lib_mod.addIncludePath(quickjs_dep.path("."));
     lib_mod.addCSourceFiles(.{
         .root = quickjs_dep.path("."),
-        .flags = &.{
-            version_flag,
-        },
         .files = &.{
             "cutils.c",
             "libregexp.c",
@@ -34,6 +30,14 @@ pub fn build(b: *std.Build) void {
             "quickjs.c",
         },
     });
+    lib_mod.addCMacro("CONFIG_VERSION", version);
+    lib_mod.addCMacro("CONFIG_BIGNUM", "1");
+
+    if (target.result.cpu.arch.isWasm()) {
+        lib_mod.addCMacro("EMSCRIPTEN", "1");
+        lib_mod.addCMacro("FE_DOWNWARD", "0");
+        lib_mod.addCMacro("FE_UPWARD", "0");
+    }
 
     const exe_mod = b.createModule(.{
         .root_source_file = b.path("src/test.zig"),
