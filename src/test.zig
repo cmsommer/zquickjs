@@ -1,7 +1,7 @@
 const std = @import("std");
 const lib = @import("zquickjs");
 
-const c = lib.c;
+const c = lib.cdef;
 
 pub fn main() !void {
     const rt = c.JS_NewRuntime() orelse {
