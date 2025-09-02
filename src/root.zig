@@ -48,6 +48,7 @@ pub const Value = struct {
         };
     }
 
+    // JS_Object
     pub fn newObject(ctx: *Context) Value {
         return Value.from(cdef.JS_NewObject(ctx.ptr));
     }
@@ -56,7 +57,69 @@ pub const Value = struct {
         return Value.from(cdef.JS_NewObjectProto(ctx.ptr, proto.ptr));
     }
 
+    // JS_Function
+    pub fn newFunction(ctx: *Context, name: []const u8) Value {
+        return Value.from(cdef.JS_NewFunction(ctx.ptr, name.ptr));
+    }
+
+    pub fn newFunctionProto(ctx: *Context, proto: Value) Value {
+        return Value.from(cdef.JS_NewFunctionProto(ctx.ptr, proto.ptr));
+    }
+
+    // JS_String
+    pub fn newString(ctx: *Context, str: []const u8) Value {
+        return Value.from(cdef.JS_NewString(ctx.ptr, str.ptr));
+    }
+
+    pub fn newStringLen(ctx: *Context, str: []const u8) Value {
+        return Value.from(cdef.JS_NewStringLen(ctx.ptr, str.ptr, str.len));
+    }
+
+    pub fn newAtomString(ctx: *Context, str: []const u8) Value {
+        return Value.from(cdef.JS_NewAtomString(ctx.ptr, str.ptr));
+    }
+
     pub fn isException(self: Value) bool {
         return cdef.JS_IsException(self.ptr) != 0;
+    }
+
+    // JS_Number
+    pub fn newInt32(ctx: *Context, val: i32) Value {
+        return Value.from(cdef.JS_NewInt32(ctx.ptr, val));
+    }
+
+    pub fn newUint32(ctx: *Context, val: u32) Value {
+        return Value.from(cdef.JS_NewUint32(ctx.ptr, val));
+    }
+
+    pub fn newFloat64(ctx: *Context, val: f64) Value {
+        return Value.from(cdef.JS_NewFloat64(ctx.ptr, val));
+    }
+
+    pub fn newBigInt64(ctx: *Context, val: i64) Value {
+        return Value.from(cdef.JS_NewBigInt64(ctx.ptr, val));
+    }
+
+    pub fn newBigUint64(ctx: *Context, val: u64) Value {
+        return Value.from(cdef.JS_NewBigUint64(ctx.ptr, val));
+    }
+
+    // JS_Class
+    pub fn newClass(ctx: *Context, name: []const u8) Value {
+        return Value.from(cdef.JS_NewClass(ctx.ptr, name.ptr));
+    }
+
+    pub fn newClassProto(ctx: *Context, proto: Value) Value {
+        return Value.from(cdef.JS_NewClassProto(ctx.ptr, proto.ptr));
+    }
+
+    // JS_Array
+    pub fn newArray(ctx: *Context) Value {
+        return Value.from(cdef.JS_NewArray(ctx.ptr));
+    }
+
+    // JS_Boolean
+    pub fn newBoolean(ctx: *Context, val: bool) Value {
+        return Value.from(cdef.JS_NewBool(ctx.ptr, @intFromBool(val)));
     }
 };
